@@ -1,8 +1,8 @@
 You can use the following commands:
-go <direction>                   -  Go in a direction given
-look (direction)                 -  Look around, direction optional
-say <message>                    -  Speak to the people at your location
-quest <list/accept/abandon/complete> (id) -  List/accept/abandon/complete quests
-inv                              -  Check your inventory
-pickup <id>                      -  Pickup an item
-exit                             -  Logout
+go "direction"
+look (direction)
+say "message"
+quest list/accept/abandon/complete (id)
+inv
+pickup <id>
+clear

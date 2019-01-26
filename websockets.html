@@ -1,8 +1,10 @@
 <!-- websockets.html -->
+<pre><b>If you get stuck, use "help" to find your way. </br></b></pre>
 <input id="input" type="text" />
 <button type="submit" onclick="send()">Send</button>
 <pre id="output"></pre>
 <script>
+	var login_token = "borked";
 	var address = "localhost:8080"
 	var input = document.getElementById("input");
 	var output = document.getElementById("output");
@@ -19,11 +21,18 @@
 	};
 
 	socket.onmessage = function (e) {
-		output.innerHTML += e.data + "\n";
+		output.innerHTML += "\n" + e.data + "\n";
 	};
 
 	function send() {
-		socket.send(input.value);
+		if(input.value == "clear")
+		{
+			output.innerHTML = "";
+		}
+		else if(input.value != "")
+		{
+			socket.send(login_token + " " + input.value);	
+		}
 		input.value = "";
 	}
 </script>
