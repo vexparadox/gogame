@@ -33,16 +33,31 @@ func login_function(parameters []string) string{
 }
 
 
-func help_function(_ []string) string{
+func help_function(_ *User, _ []string) string{
 	return help_text
 }
 
 
-func look_function(parameters []string) string{
-	if check_parameters(1, parameters){
+func look_function(user_data *User, parameters []string) string{
+	current_tile := world_map.get_tile_for_user(user_data)
 
-	} else {
-
+	if current_tile != nil{
+		if check_parameters(1, parameters){
+			if parameters[0] == "e"{
+				return current_tile.East
+			} else if parameters[0] == "w"{
+				return current_tile.West
+			} else if parameters[0] == "n"{
+				return current_tile.North
+			} else if parameters[0] == "s"{
+				return current_tile.South
+			}else{
+				return "Invalid direction given."
+			}
+		} else {
+			return current_tile.Here
+		}
 	}
-	return help_text
+	fmt.Printf("Failed to find valid tile for user %s", user_data.username)
+	return "Internal server error!"
 }

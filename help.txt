@@ -1,9 +1,8 @@
 You can use the following commands:
 <b>login "user_id" "password"</b>
-help
-?
+help/?
+look (n/e/s/w)
 go "direction"
-look (direction)
 say "message"
 quest list/accept/abandon/complete (id)
 inv

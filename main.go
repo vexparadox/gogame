@@ -42,7 +42,7 @@ func main() {
 	}
 
 	//map of functions in functions.go to string commands
-	func_map := map[string](func([]string)string){
+	func_map := map[string](func(*User, []string)string){
 		"help"  : help_function,
 		"?"		: help_function,
 		"look"	: look_function,
@@ -86,7 +86,7 @@ func main() {
 							unique_id, _ := uuid.NewV4()
 							hashed_password, _ := bcrypt.GenerateFromPassword([]byte(parameters[2:][1]), 10)
 
-							new_user := User{parameters[2:][0], *unique_id, hashed_password, 0, 0}
+							new_user := User{parameters[2:][0], *unique_id, hashed_password, 0}
 							users = append(users, new_user)
 							fmt.Printf("New user has registered! %s : %s\n", parameters[2:][0], unique_id.String())
 							reply = "userid:"+unique_id.String()
@@ -97,11 +97,12 @@ func main() {
 					}
 				} else {
 					if is_user_id_valid(parameters[0]) {
+						user_data := get_user_data(parameters[0])
 						//call the matching function with the said parameters
 						func_to_call := func_map[parameters[1]]
 						if func_to_call != nil{
 							//remove first 2 as they are the login id and function name
-							reply = func_to_call(parameters[2:])
+							reply = func_to_call(user_data, parameters[2:])
 						}	
 					} else {
 						reply = "Invalid login token, try refreshing or logging in again!"
