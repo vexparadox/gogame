@@ -37,6 +37,10 @@ func help_function(_ *User, _ []string) string{
 	return help_text
 }
 
+func profile_function(user_data *User, _[]string) string{
+	return "Username: " + user_data.username
+}
+
 
 func look_function(user_data *User, parameters []string) string{
 	current_tile := world_map.get_tile_for_user(user_data)

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"flag"
 	"strings"
 	"net/http"
 	"io/ioutil"
@@ -12,7 +13,7 @@ import (
 
 //globals
 
-var data_path string = "/Users/williammeaton/go/src/github.com/vexparadox/gogame/"
+var data_path string
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  2048,
 	WriteBufferSize: 2048,
@@ -32,6 +33,11 @@ func load_help_text() bool{
 }
 
 func main() {
+	data_path_ptr := flag.String("data_dir", ".", "The directory where the data is")
+	flag.Parse()
+	if data_path_ptr != nil{
+		data_path = *data_path_ptr
+	}
 
 	if load_map() == false{
 		return
@@ -47,6 +53,7 @@ func main() {
 		"?"		: help_function,
 		"look"	: look_function,
 		"l"		: look_function,
+		"profile" : profile_function,
 	}
 
 

@@ -8,3 +8,4 @@ quest list/accept/abandon/complete (id)
 inv
 pickup <id>
 clear
+profile
