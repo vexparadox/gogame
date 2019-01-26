@@ -32,8 +32,11 @@ button[type=submit]:hover {
 
 .command_holder
 {
+	padding: 10px;
 	position: -webkit-sticky;
   	position: sticky;	
+  	top: 0;
+  	background-color: white;
 }
 
 body{
@@ -47,7 +50,7 @@ body{
 		<input id="command_input" type="text" />
 		<button id="submit_command" type="submit" onclick="send()">Send Command</button>
 	</div>
-	<div id="output"></pre>
+	<div id="output"></div>
 </body>
 
 <script>
