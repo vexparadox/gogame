@@ -1,6 +1,6 @@
 <!-- websockets.html -->
 <input id="input" type="text" />
-<button onclick="send()">Send</button>
+<button type="submit" onclick="send()">Send</button>
 <pre id="output"></pre>
 <script>
 	var address = "localhost:8080"
@@ -10,6 +10,11 @@
 
 	socket.onopen = function () {
 		output.innerHTML += "Successfully connected to " + address + "\n";
+		socket.send("new_user");
+	};
+	
+	socket.onclose = function () {
+		output.innerHTML += "Connection to " + address + " was lost.\n";
 		socket.send("new_user");
 	};
 

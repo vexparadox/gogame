@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"encoding/json"
 	"os"
+	"io/ioutil"
 	"github.com/gorilla/websocket"
 )
 
@@ -41,6 +43,9 @@ var upgrader = websocket.Upgrader{
 
 var world_map Map
 
+var help_text string
+
+
 func load_map() bool {
 	//load up the map data
 	json_map, err := os.Open(data_path + "map.json")
@@ -66,13 +71,31 @@ func load_map() bool {
 	return true
 }
 
-
+func load_help_text() bool{
+	help_file_bytes, err := ioutil.ReadFile(data_path+"help.txt")
+	if err != nil{
+		fmt.Println("Failed to load help file")
+		return false
+	}
+	help_text = string(help_file_bytes)
+	return true
+}
 
 func main() {
 
 	if load_map() == false{
 		return
 	}
+
+	if load_help_text() == false{
+		return
+	}
+
+	func_map := map[string](func([]string)string){
+		"help"  : help_function,
+		"?"		: help_function,
+	}
+
 
 	http.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
 		conn, _ := upgrader.Upgrade(w, r, nil) // error ignored for sake of simplicity
@@ -89,17 +112,28 @@ func main() {
 
 			if msg_string == "new_user"{
 				reply = world_map.Welcome_text
-				fmt.Printf("New user from: %s\n", conn.RemoteAddr())
-			} else {
+				fmt.Printf("New connection from: %s\n", conn.RemoteAddr())
+			} else if msg_string != "" {
 				// Print the message to the console
 				fmt.Printf("%s sent: %s\n", conn.RemoteAddr(), msg_string)
+
+				var parameters []string = strings.Split(msg_string, " ")
+				//call the matching function with the said parameters
+				func_to_call := func_map[parameters[0]]
+				if func_to_call != nil{
+					reply = func_to_call(parameters)
+				}
 			}
 
+
+
+			//if we have no reply, it's because we didn't parse correctly
+			if reply == ""{
+				reply = "\""+msg_string+"\" was an unrecognised command, try using help to see what you can do."
+			}
 			// Write message back to browser if there
-			if reply != ""{
-				if err = conn.WriteMessage(msgType, []byte(reply)); err != nil {
-					return
-				}
+			if err = conn.WriteMessage(msgType, []byte(reply)); err != nil {
+				return
 			}
 		}
 	})
