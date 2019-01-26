@@ -1,32 +1,41 @@
 <!-- websockets.html -->
-<pre><b>If you get stuck, use "help" to find your way. </br></b></pre>
+<pre><b>If you get stuck, use "help" to find your way. But try "login" first. </br></b></pre>
 <input id="input" type="text" />
 <button type="submit" onclick="send()">Send</button>
 <pre id="output"></pre>
 <script>
-	var login_token = "";
-	var address = "localhost:8080"
+	var login_token = "dedtoken";
+	var address = "localhost:8080";
 	var input = document.getElementById("input");
 	var output = document.getElementById("output");
 	var socket = new WebSocket("ws://"+address+"/echo");
 
 	socket.onopen = function () {
 		output.innerHTML += "Successfully connected to " + address + "\n";
-		socket.send("new_user");
+		socket.send("new_conn");
 	};
 	
 	socket.onclose = function () {
 		output.innerHTML += "Connection to " + address + " was lost.\n";
-		socket.send("new_user");
 	};
 
 	socket.onmessage = function (e) {
-		if(login_token == "")
+		var token_found = false;
+		//waiting for new token to arrive
+		if(login_token == "dedtoken")
 		{
 			var split_tokens = e.data.split(":");
-			login_token = split_tokens[1];
+			if(split_tokens.length == 2)
+			{
+				login_token = split_tokens[1];
+				token_found = true;
+				output.innerHTML += "\nLogged in successfully! \n";	
+			}
 		}
-		output.innerHTML += "\n" + e.data + "\n";
+		if(token_found == false)
+		{
+			output.innerHTML += "\n" + e.data + "\n";	
+		}
 	};
 
 	function send() {

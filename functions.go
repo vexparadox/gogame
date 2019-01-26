@@ -21,10 +21,10 @@ func login_function(parameters []string) string{
 	for _, user := range users{
 		if user.username == parameters[0]{
 			err := bcrypt.CompareHashAndPassword(user.password, []byte(parameters[1]))
-			if err == nil{
+			if err != nil{
 				return "Invalid password provided!"
 			} else {
-				fmt.Printf("User has logged in: %s", user.username)
+				fmt.Printf("User has logged in: %s\n", user.username)
 				return (*uuid.UUID)(&(user.id)).String()
 			}
 		}

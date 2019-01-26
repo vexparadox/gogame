@@ -64,7 +64,7 @@ func main() {
 			var msg_string = string(msg)
 			var parameters []string
 
-			if msg_string == "new_user"{
+			if msg_string == "new_conn"{
 				reply = world_map.Welcome_text
 				fmt.Printf("New connection from: %s\n", conn.RemoteAddr())
 			} else if msg_string != "" {
@@ -74,12 +74,11 @@ func main() {
 				//split to an array of parameters given
 				parameters = strings.Split(msg_string, " ")
 
-				//check for userid
-				if parameters[0] == "" && parameters[1] != "login"{
-					reply = "You're not logged in! Try using the login command!"
-				} else {
-					//special case for login cos why not
-					if parameters[1] == "login"{
+				//allow login before validation check
+				if parameters[1] == "login"{
+					if is_user_id_valid(parameters[0]){
+						reply = "You're already logged in!"
+					} else {
 						user_id := login_function(parameters[2:])
 						//no user id, so create new one!
 						if user_id == ""{
@@ -89,22 +88,25 @@ func main() {
 
 							new_user := User{parameters[2:][0], *unique_id, hashed_password, 0, 0}
 							users = append(users, new_user)
-							fmt.Printf("New user has registered! %s\n", parameters[2:][0])
+							fmt.Printf("New user has registered! %s : %s\n", parameters[2:][0], unique_id.String())
 							reply = "userid:"+unique_id.String()
-						} else {
+						}else {
 							//otherwise send back userid
 							reply = "userid:"+user_id
 						}
-					} else {
-
+					}
+				} else {
+					if is_user_id_valid(parameters[0]) {
 						//call the matching function with the said parameters
 						func_to_call := func_map[parameters[1]]
 						if func_to_call != nil{
 							//remove first 2 as they are the login id and function name
 							reply = func_to_call(parameters[2:])
-						}
-					}	
-				}
+						}	
+					} else {
+						reply = "Invalid login token, try refreshing or logging in again!"
+					}
+				}	
 			}
 
 			//if we have no reply, it's because we didn't parse correctly
