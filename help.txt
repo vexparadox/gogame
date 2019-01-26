@@ -1,4 +1,7 @@
 You can use the following commands:
+<b>login "user_id" "password"</b>
+help
+?
 go "direction"
 look (direction)
 say "message"

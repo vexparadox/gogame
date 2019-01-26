@@ -4,7 +4,7 @@
 <button type="submit" onclick="send()">Send</button>
 <pre id="output"></pre>
 <script>
-	var login_token = "borked";
+	var login_token = "";
 	var address = "localhost:8080"
 	var input = document.getElementById("input");
 	var output = document.getElementById("output");
@@ -21,6 +21,11 @@
 	};
 
 	socket.onmessage = function (e) {
+		if(login_token == "")
+		{
+			var split_tokens = e.data.split(":");
+			login_token = split_tokens[1];
+		}
 		output.innerHTML += "\n" + e.data + "\n";
 	};
 

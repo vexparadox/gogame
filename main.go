@@ -6,16 +6,19 @@ import (
 	"net/http"
 	"io/ioutil"
 	"github.com/gorilla/websocket"
+	"github.com/nu7hatch/gouuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
 //globals
 
 var data_path string = "/Users/williammeaton/go/src/github.com/vexparadox/gogame/"
 var upgrader = websocket.Upgrader{
-	ReadBufferSize:  1024,
-	WriteBufferSize: 1024,
+	ReadBufferSize:  2048,
+	WriteBufferSize: 2048,
 }
 var world_map Map
+var users []User
 var help_text string
 
 func load_help_text() bool{
@@ -72,16 +75,34 @@ func main() {
 				parameters = strings.Split(msg_string, " ")
 
 				//check for userid
-				if parameters[0] == ""{
-					reply = "Invalid login token, try using the login command again"
+				if parameters[0] == "" && parameters[1] != "login"{
+					reply = "You're not logged in! Try using the login command!"
 				} else {
+					//special case for login cos why not
+					if parameters[1] == "login"{
+						user_id := login_function(parameters[2:])
+						//no user id, so create new one!
+						if user_id == ""{
 
-					//now check if user id is valid
+							unique_id, _ := uuid.NewV4()
+							hashed_password, _ := bcrypt.GenerateFromPassword([]byte(parameters[2:][1]), 10)
 
-					//call the matching function with the said parameters
-					func_to_call := func_map[parameters[1]]
-					if func_to_call != nil{
-						reply = func_to_call(parameters)
+							new_user := User{parameters[2:][0], *unique_id, hashed_password, 0, 0}
+							users = append(users, new_user)
+							fmt.Printf("New user has registered! %s\n", parameters[2:][0])
+							reply = "userid:"+unique_id.String()
+						} else {
+							//otherwise send back userid
+							reply = "userid:"+user_id
+						}
+					} else {
+
+						//call the matching function with the said parameters
+						func_to_call := func_map[parameters[1]]
+						if func_to_call != nil{
+							//remove first 2 as they are the login id and function name
+							reply = func_to_call(parameters[2:])
+						}
 					}	
 				}
 			}
