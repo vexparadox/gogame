@@ -1,0 +1,91 @@
+{
+	"welcome_text" : "Welcome! Type 'help' to see what you can do.",
+	"width": 3,
+	"height": 2,
+	"worldmap":[
+		{
+			"id": 0,
+			"title": "Gwynhaven - Back Gate",
+			"description": "You stand at the back entrance to the great town of Gwynhaven.",
+			"here": "You're at the back gate of Gwynhaven, there's not much on this side of town.\nYou can hear the bustling of a busy town centre a short while away.",
+			"n": "Through the gates you see a thick forest, it took you months to get here.",
+			"e": "To the east, you can see the north side of the town square.",
+			"s": "Turning to the south, you see the west side of the town square, there's a couple of tradesmen selling exotic goods from a far off land.",
+			"w": "To the west, the town walls tower over you. They're simple but effective.",
+			"requireditems": [],
+			"passable": true,
+			"quests" : [],
+			"items" : []
+		},
+		{
+			"id": 1,
+			"title": "Gwynhaven - North Town Square",
+			"description": "The north side of the town square of Gwynhaven.",
+			"here": "The buildings around you get bigger as you get closer to the centre of the town. They're made from a cold, pale grey stone. There are a few stalls in the vicinity, a man with a quest catches your eye.",
+			"n": "To your north are the walls of this town, they're strong and old. You wonder what they were built to keep out.",
+			"e": "Looking to your east there's a narrow alley way. It leads away from the busy streets.",
+			"s": "To the south is the centre of town, it's busy and loud.",
+			"w": "To the west is the back gate of Gwynhaven. You think back to when you first caught glimpse of the wooden barricades through the trees.",
+			"requireditems": [], 
+			"passable": true,
+			"quests" : [0],
+			"items" : []
+		},
+		{
+			"id": 2,
+			"title": "Gwynhaven - Narrow alley",
+			"description": "A narrow alley way that connects the town square with .",
+			"here": "The buildings tower over you, it's noticeably colder here. There's some beggars sleeping in doorways, they don't seem to be aware of you. There's a stick[0] on the wall.",
+			"n": "The north is blocked by buildings.",
+			"e": "The east carries a sense excitment, you can see the town thinning and the walls beyond.",
+			"s": "The south is blocked by buildings.",
+			"w": "Turning to the west there's the north side of the town centre.",
+			"requireditems": [],
+			"passable": true,
+			"quests" : [],
+			"items" : [0]
+		},
+		{
+			"id": 3,
+			"title": "Gwynhaven - West Town Square",
+			"description": "A dense forest, older than the town of Gwynhaven.",
+			"here": "The ground moves as you walk over it, the air is thick with life." ,
+			"n": "To the north you can see the town of Gwynhaven, the feeling of home gives you warmth.",
+			"e": "The east carries the forest further.",
+			"s": "The south is impassable, once again the black has caught up to you.",
+			"w": "Turning to the west you see the face of the void, it stares back.",
+			"requireditems": ["cut"],
+			"passable": false,
+			"quests" : [],
+			"items" : []
+		},
+		{
+			"id": 4,
+			"title": "Gwynhaven - Town Square",
+			"description": "The outskirts of the Fargen Forest.",
+			"here": "This place feels safe. There's a message board on the side of a hut, it has messages left by other travellers.\nTaking a closer look there's also some job postings." ,
+			"n": "Over the hill to the north you see the Forest Path, you're annoyed at how easy it was to walk.",
+			"e": "To the east there's a path lined with guards, they seem stiff.",
+			"s": "The south sees the world fall away into black, you turn away.",
+			"w": "Turning to the west you see the forest continue.",
+			"requireditems": ["cut"],
+			"passable": false,
+			"quests" : [],
+			"items" : []
+		},
+		{
+			"id": 5,
+			"title": "BUILDINGS! IMPASSABLE",
+			"description": "",
+			"here": "" ,
+			"n": "",
+			"e": "",
+			"s": "",
+			"w": "",
+			"requireditems": [],
+			"passable": false,
+			"quests" : [],
+			"items" : []
+		}
+	]
+}
