@@ -87,11 +87,21 @@ func main() {
 				//split to an array of parameters given
 				parameters = strings.Split(msg_string, " ")
 
-				//allow login before validation check
-				if parameters[1] == "login"{
-					if is_user_id_valid(parameters[0]){
+
+				if is_user_id_valid(parameters[0]) {
+					if parameters[1] == "login"{
 						reply = "You're already logged in!"
-					} else {
+					}else{
+						user_data := get_user_data(parameters[0])
+						//call the matching function with the said parameters
+						func_to_call := func_map[parameters[1]]
+						if func_to_call != nil{
+							//remove first 2 as they are the login id and function name
+							reply = func_to_call(user_data, parameters[2:])
+						}	
+					}
+				}else{
+					if parameters[1] == "login"{
 						user_id := login_function(parameters[2:])
 						//no user id, so create new one!
 						if user_id == ""{
@@ -107,20 +117,13 @@ func main() {
 							//otherwise send back userid
 							reply = "userid:"+user_id
 						}
-					}
-				} else {
-					if is_user_id_valid(parameters[0]) {
-						user_data := get_user_data(parameters[0])
-						//call the matching function with the said parameters
-						func_to_call := func_map[parameters[1]]
-						if func_to_call != nil{
-							//remove first 2 as they are the login id and function name
-							reply = func_to_call(user_data, parameters[2:])
-						}	
-					} else {
+					}else if parameters[1] == "help" || parameters[1] == "?"{
+						//this check is jank af
+						reply = help_function(nil, parameters[2:])
+					}else{
 						reply = "Invalid login token, try refreshing or logging in again!"
 					}
-				}	
+				}
 			}
 
 			//if we have no reply, it's because we didn't parse correctly
