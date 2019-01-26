@@ -84,7 +84,7 @@ body{
 		if(login_token == "dedtoken")
 		{
 			var split_tokens = e.data.split(":");
-			if(split_tokens.length == 2)
+			if(split_tokens.length == 2 && split_tokens[0] == "userid")
 			{
 				login_token = split_tokens[1];
 				token_found = true;
