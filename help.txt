@@ -6,6 +6,6 @@ go "direction"</br>
 say "message"</br>
 quest list/accept/abandon/complete (id)</br>
 inv</br>
-pickup 9id)</br>
+pickup (id)</br>
 clear</br>
 profile</br>
