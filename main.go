@@ -54,6 +54,12 @@ func main() {
 		"look"	: look_function,
 		"l"		: look_function,
 		"profile" : profile_function,
+		"go" : go_function,
+		"inv" : inv_function,
+		"pickup" : pickup_function,
+		"quest" : quest_function,
+		"say" : say_function,
+
 	}
 
 

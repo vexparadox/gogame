@@ -41,6 +41,25 @@ func profile_function(user_data *User, _[]string) string{
 	return "Username: " + user_data.username
 }
 
+func go_function(_ *User, _[]string) string{
+	return "Not done yet!"
+}
+
+func inv_function(_ *User, _[]string) string{
+	return "Not done yet!"
+}
+
+func pickup_function(_ *User, _[]string) string{
+	return "Not done yet!"
+}
+
+func say_function(_ *User, _[]string) string{
+	return "Not done yet!"
+}
+
+func quest_function(_ *User, _[]string) string{
+	return "Not done yet!"
+}
 
 func look_function(user_data *User, parameters []string) string{
 	current_tile := world_map.get_tile_for_user(user_data)
