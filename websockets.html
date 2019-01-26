@@ -30,15 +30,23 @@ button[type=submit]:hover {
   background-color: #45a049;
 }
 
+.command_holder
+{
+	position: -webkit-sticky;
+  	position: sticky;	
+}
+
 body{
 	margin: 200px;
 	font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace;
 }
 </style>
 <body>
-	<div class="help_text"><b>If you get stuck, use "help" to find your way. But try "login" first.</b></div>
-	<input id="command_input" type="text" />
-	<button id="submit_command" type="submit" onclick="send()">Send Command</button>
+	<div class="command_holder">
+		<div class="help_text"><b>If you get stuck, use "help" to find your way. But try "login" first.</b></div>
+		<input id="command_input" type="text" />
+		<button id="submit_command" type="submit" onclick="send()">Send Command</button>
+	</div>
 	<div id="output"></pre>
 </body>
 
