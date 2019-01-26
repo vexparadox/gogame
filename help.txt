@@ -1,11 +1,11 @@
-You can use the following commands:
-<b>login "user_id" "password"</b>
-help/?
-look (n/e/s/w)
-go "direction"
-say "message"
-quest list/accept/abandon/complete (id)
-inv
-pickup <id>
-clear
-profile
+You can use the following commands: </br>
+<b>login "user_id" "password"</b></br>
+help/?</br>
+look (n/e/s/w)</br>
+go "direction"</br>
+say "message"</br>
+quest list/accept/abandon/complete (id)</br>
+inv</br>
+pickup 9id)</br>
+clear</br>
+profile</br>

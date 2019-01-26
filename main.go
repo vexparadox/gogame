@@ -63,7 +63,7 @@ func main() {
 	}
 
 
-	http.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		conn, _ := upgrader.Upgrade(w, r, nil) // error ignored for sake of simplicity
 
 		for {
