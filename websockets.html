@@ -2,7 +2,7 @@
 <pre><b>If you get stuck, use "help" to find your way. But try "login" first. </br></b></pre>
 <input id="command_input" type="text" />
 <button id="submit_command" type="submit" onclick="send()">Send</button>
-<pre id="output"></pre>
+<div id="output"></pre>
 <script>
 
 	///handle enter pressed
@@ -21,12 +21,12 @@
 	var socket = new WebSocket("ws://"+address+"/echo");
 
 	socket.onopen = function () {
-		output.innerHTML += "Successfully connected to " + address + "\n";
+		print_entry("Successfully connected to " + address);
 		socket.send("new_conn");
 	};
 	
 	socket.onclose = function () {
-		output.innerHTML += "Connection to " + address + " was lost.\n";
+		print_entry("Connection to " + address + " was lost.");
 	};
 
 	socket.onmessage = function (e) {
@@ -39,12 +39,12 @@
 			{
 				login_token = split_tokens[1];
 				token_found = true;
-				output.innerHTML += "\nLogged in successfully! \n";	
+				print_entry("Logged in successfully!");	
 			}
 		}
 		if(token_found == false)
 		{
-			output.innerHTML += "\n" + e.data + "\n";	
+			print_entry(e.data)
 		}
 	};
 
@@ -58,5 +58,9 @@
 			socket.send(login_token + " " + input.value);	
 		}
 		input.value = "";
+	}
+
+	function print_entry(str){
+		output.innerHTML += "<div class='entry'>"+str+"</div>"
 	}
 </script>
