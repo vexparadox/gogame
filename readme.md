@@ -1,6 +1,8 @@
 # GoGame!
 
-A yet to be titled browser based mud!
+A yet-to-be-titled browser based MUD written in GoLang!
+
+There's usually a server running at http://46.101.66.98:8080, go to this in your browser to play!
 
 ## Requirements
 
