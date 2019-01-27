@@ -60,3 +60,10 @@ func (_map Map) get_tile_for_user(user *User) *Tile{
 	}
 	return nil
 }
+
+func (_map Map) tile_is_passable(location_id int) bool{
+	if location_id < 0 || len(_map.Tiles) < location_id{
+		return false
+	}
+	return _map.Tiles[location_id].Passable
+}

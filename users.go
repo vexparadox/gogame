@@ -4,6 +4,7 @@ import(
 	"github.com/nu7hatch/gouuid"
 	"golang.org/x/crypto/bcrypt"
 )
+
 type User struct
 {
 	username string
@@ -34,7 +35,7 @@ func get_user_data(user_id string) *User{
 
 	for _, user := range users{
 		if *unique_id == user.id{
-			return &user
+			return user
 		}
 	}
 	return nil
@@ -63,7 +64,8 @@ func create_new_user(parameters []string) (*User, string){
 
 	unique_id, _ 		:= uuid.NewV4()
 	hashed_password, _ 	:= bcrypt.GenerateFromPassword([]byte(password), 10)
-	new_user := User{username, *unique_id, hashed_password, 0}
+	new_user := new(User)
+	*new_user = User{username, *unique_id, hashed_password, 0}
 	users = append(users, new_user)
-	return &new_user, ""
+	return new_user, ""
 }

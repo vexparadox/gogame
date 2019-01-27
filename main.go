@@ -16,7 +16,7 @@ var upgrader = websocket.Upgrader{
 }
 var response_function_map map[string](func(*User, []string)string)
 var world_map Map
-var users []User
+var users []*User
 var help_text string
 
 func load_help_text() bool{

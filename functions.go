@@ -25,7 +25,7 @@ func login_function(parameters []string) (*User, string) {
 				return nil, "Invalid password provided!"
 			} else {
 				fmt.Printf("User has logged in: %s\n", user.username)
-				return &user, ""
+				return user, ""
 			}
 		}
 	}
@@ -41,8 +41,55 @@ func profile_function(user_data *User, _[]string) string{
 	return "Username: " + user_data.username
 }
 
-func go_function(_ *User, _[]string) string{
-	return "Not done yet!"
+func go_function(user_data *User, parameters []string) string{
+	current_location := user_data.location_id
+
+	const invalid_direction string = "You can't go in that direction."
+	const impassable_direction string = "That's direction is impassable."
+
+	if check_parameters(1, parameters){
+		if parameters[0] == "e"{
+			if (current_location+1) % world_map.Width == 0{
+				return invalid_direction
+			} else if world_map.tile_is_passable(current_location+1) == false{
+				return impassable_direction
+			} else {
+				user_data.location_id = current_location+1
+				return "You move to the East."
+			}
+		} else if parameters[0] == "w"{
+			if current_location % world_map.Width == 0{
+				return invalid_direction
+			} else if world_map.tile_is_passable(current_location-1) == false{
+				return impassable_direction
+			} else {
+				user_data.location_id = current_location-1
+				return "You move to the west."
+			}
+		} else if parameters[0] == "n"{
+			if current_location < world_map.Width{
+				return invalid_direction
+			} else if world_map.tile_is_passable(current_location-world_map.Width) == false{
+				return impassable_direction
+			} else {
+				user_data.location_id = current_location-world_map.Width
+				return "You move to the north."
+			}
+		} else if parameters[0] == "s"{
+			if (current_location / world_map.Height) >= world_map.Height{
+				return invalid_direction
+			} else if world_map.tile_is_passable(current_location+world_map.Width) == false{
+				return impassable_direction
+			} else {
+				user_data.location_id = current_location+world_map.Width
+				return "You move to the south."
+			}
+
+		}else{
+			return "Invalid direction given."
+		}
+	}
+	return incorrect_parameters
 }
 
 func inv_function(_ *User, _[]string) string{
