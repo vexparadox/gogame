@@ -4,7 +4,7 @@
   background-color: white;
 }
 
-.entry:nth-child(even) {
+.entry:nth-last-child(even) {
     background-color: #f4f4f4;
     border-radius: 5px;
 }

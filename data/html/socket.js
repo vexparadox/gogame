@@ -67,6 +67,6 @@ function send_with_token(str)
 }
 
 function print_entry(str){
-	output.innerHTML += "<div class='entry'>"+str+"</div>"
-	window.scrollTo(0,document.body.scrollHeight);
+	//prepend entry
+	output.innerHTML = "<div class='entry'>"+str+"</div>" + output.innerHTML;
 }
