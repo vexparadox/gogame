@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"flag"
+	"time"
 	"net/http"
 	"io/ioutil"
 	"github.com/gorilla/websocket"
@@ -59,6 +60,17 @@ func main() {
 		"quest" : quest_function,
 		"say" : say_function,
 	}
+
+	//save the game every 10 seconds or so
+	ticker 	:= time.NewTicker(10 * time.Second)
+	go func() {
+	    for {
+	       select {
+	        case <- ticker.C:
+	            save_users()
+	        }
+	    }
+	 }()
 
 
 	http.HandleFunc("/ws", handle_socket)

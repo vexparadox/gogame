@@ -31,6 +31,7 @@ func save_users() bool {
 		return false
 	}
 	ioutil.WriteFile(data_path+"users.json", user_json, 0644)
+	fmt.Println("User file saved successfully.")
 	return true
 }
 
