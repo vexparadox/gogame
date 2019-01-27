@@ -36,10 +36,9 @@ socket.onmessage = function (e) {
 	if(recieved_obj["token"] != "")
 	{
 		login_token = recieved_obj["token"]
-		token_found = true;
-		send_with_token("profile"); // request the profile name
 	}
-	else
+
+	if(recieved_obj["message"] != "")
 	{
 		print_entry(recieved_obj["message"]);
 	}
