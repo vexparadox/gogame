@@ -138,7 +138,7 @@ func main() {
 	})
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, data_path+"websockets.html")
+		http.ServeFile(w, r, http.FileServer(http.Dir(data_path+"html")))
 	})
 
 	http.ListenAndServe(":8080", nil)
