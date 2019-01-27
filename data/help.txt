@@ -1,11 +1,12 @@
-You can use the following commands: </br>
-<b>login "user_id" "password"</b></br>
-help/?</br>
-look (n/e/s/w)</br>
-go "direction"</br>
-say "message"</br>
-quest list/accept/abandon/complete (id)</br>
-inv</br>
-pickup (id)</br>
-clear</br>
-profile</br>
+<b>You can use the following commands: </b></br>
+- register "username" "password"</br>
+- login "username" "password"</br>
+- help/?</br>
+- look (n/e/s/w)</br>
+- go "direction"</br>
+- say "message"</br>
+- quest list/accept/abandon/complete (id)</br>
+- inv</br>
+- pickup (id)</br>
+- clear</br>
+- profile</br>

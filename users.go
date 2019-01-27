@@ -40,10 +40,30 @@ func get_user_data(user_id string) *User{
 	return nil
 }
 
-func create_new_user(username string, password string) *User{
+func username_exists(username string) bool{
+	for _, user := range users{
+		if username == user.username{
+			return true
+		}
+	}
+	return false
+}
+
+func create_new_user(parameters []string) (*User, string){
+	if check_parameters(2, parameters) == false{
+		return nil, incorrect_parameters
+	}
+
+	username := parameters[0]
+	password := parameters[1]
+
+	if username_exists(username){
+		return nil, "The username '" + username + "' already exists."
+	}
+
 	unique_id, _ 		:= uuid.NewV4()
 	hashed_password, _ 	:= bcrypt.GenerateFromPassword([]byte(password), 10)
 	new_user := User{username, *unique_id, hashed_password, 0}
 	users = append(users, new_user)
-	return &new_user
+	return &new_user, ""
 }

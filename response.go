@@ -1,3 +1,9 @@
+/*
+TODO:
+	- fix the way commands are called, the odd if login etc is dumb, get rid of it
+	- add in remaining commands
+*/
+
 package main
 
 import(
@@ -47,8 +53,10 @@ func handle_socket(w http.ResponseWriter, r *http.Request){
 				//otherwise we check if the token they've provided it valid
 				if is_user_id_valid(client_message.Token) {
 					if command_string == "login"{
-						server_reply.Message = "You're already logged in!"
-					}else{
+						server_reply.Message = "You're already logged in."
+					} else if command_string == "register"{
+						server_reply.Message = "You can't register when you're logged in."
+					} else{
 						user_data := get_user_data(client_message.Token)
 						//call the matching function with the said parameters
 						func_to_call := response_function_map[command_string]
@@ -60,17 +68,23 @@ func handle_socket(w http.ResponseWriter, r *http.Request){
 					}
 				}else{
 					if command_string == "login"{
-						user_id := login_function(parameters)
-						//no user id, so create new one!
-						if user_id == ""{
-							var new_user *User = create_new_user(parameters[0], parameters[1])
-							fmt.Printf("%s: New user has registered! %s\n", conn.RemoteAddr(), new_user.username)
-							server_reply.Token = (*uuid.UUID)(&(new_user.id)).String()
-						}else {
-							//otherwise send back userid of the exisiting user
-							server_reply.Token = user_id
+						user_data, reason_str := login_function(parameters)
+						//if we get a nil back, it means it was invalid, so send the reason back to the client
+						if user_data == nil{
+							server_reply.Message = reason_str
+						}else{
+							server_reply.Token = (*uuid.UUID)(&(user_data.id)).String()
 						}
-					}else if command_string == "help" || command_string == "?"{
+					} else if command_string == "register" {
+						new_user, reason_str := create_new_user(parameters)
+						//if we get a nil back, it means it was invalid, so send the reason back to the client
+						if new_user == nil{
+							server_reply.Message = reason_str
+						}else{
+							server_reply.Token = (*uuid.UUID)(&(new_user.id)).String()
+							server_reply.Message = "You've registered with the username " + parameters[0]
+						}
+					} else if command_string == "help" || command_string == "?"{
 						//this check is jank af but we need the player to be able to ask for help before they login
 						server_reply.Message = help_function(nil, parameters)
 					}else{

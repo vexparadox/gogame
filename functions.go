@@ -3,7 +3,6 @@ package main
 import(
 	"fmt"
 	"golang.org/x/crypto/bcrypt"
-	"github.com/nu7hatch/gouuid"
 )
 
 var incorrect_parameters string = "Incorrect number of parameters for that command!"
@@ -13,23 +12,24 @@ func check_parameters(required int, parameters []string) bool {
 }
 
 //login function is special okay!
-//if valid, it will return the user's id
-func login_function(parameters []string) string{
+//if valid, it returns the logged in user
+//otherwise user will be nil and a string reason why
+func login_function(parameters []string) (*User, string) {
 	if check_parameters(2, parameters) == false{
-		return incorrect_parameters
+		return nil, incorrect_parameters
 	}
 	for _, user := range users{
 		if user.username == parameters[0]{
 			err := bcrypt.CompareHashAndPassword(user.password, []byte(parameters[1]))
 			if err != nil{
-				return "Invalid password provided!"
+				return nil, "Invalid password provided!"
 			} else {
 				fmt.Printf("User has logged in: %s\n", user.username)
-				return (*uuid.UUID)(&(user.id)).String()
+				return &user, ""
 			}
 		}
 	}
-	return ""
+	return nil, "Username '" + parameters[0] + "' doesn't exist! Use the 'register' command to create a new account."
 }
 
 
