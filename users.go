@@ -2,6 +2,7 @@ package main
 
 import(
 	"github.com/nu7hatch/gouuid"
+	"golang.org/x/crypto/bcrypt"
 )
 type User struct
 {
@@ -16,7 +17,7 @@ func is_user_id_valid(user_id string) bool{
 	if unique_id == nil || err != nil{
 		return false
 	}
-	
+
 	for _, user := range users{
 		if *unique_id == user.id{
 			return true
@@ -37,4 +38,12 @@ func get_user_data(user_id string) *User{
 		}
 	}
 	return nil
+}
+
+func create_new_user(username string, password string) *User{
+	unique_id, _ 		:= uuid.NewV4()
+	hashed_password, _ 	:= bcrypt.GenerateFromPassword([]byte(password), 10)
+	new_user := User{username, *unique_id, hashed_password, 0}
+	users = append(users, new_user)
+	return &new_user
 }
