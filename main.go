@@ -8,16 +8,13 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-//globals
-
+//globals that could be removed maybe (but are globals the real enemy?!)
 var data_path string
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  2048,
 	WriteBufferSize: 2048,
 }
-
 var response_function_map map[string](func(*User, []string)string)
-
 var world_map Map
 var users []User
 var help_text string
@@ -33,6 +30,7 @@ func load_help_text() bool{
 }
 
 func main() {
+	//get the data directory from the cli
 	data_path_ptr := flag.String("data_dir", ".", "The directory where the data is")
 	flag.Parse()
 	if data_path_ptr != nil{

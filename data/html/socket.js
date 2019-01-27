@@ -7,17 +7,16 @@ input.addEventListener("keyup", function(event) {
   }
 });
 
-
-var login_token = "dedtoken";
+var login_token = "";
 var had_connected = false;
-var address = "46.101.66.98:8080";
+var address = window.location.hostname+":8080";
 var output = document.getElementById("output");
 var socket = new WebSocket("ws://"+address+"/ws");
 
 socket.onopen = function () {
 	print_entry("Successfully connected to " + address);
 	had_connected = true;
-	socket.send("new_conn");
+	send_with_token("new_conn");
 };
 
 socket.onclose = function () {
@@ -33,34 +32,39 @@ socket.onclose = function () {
 };
 
 socket.onmessage = function (e) {
-	var token_found = false;
-	//waiting for new token to arrive
-	if(login_token == "dedtoken")
+	var recieved_obj = JSON.parse(e.data);
+	if(recieved_obj["token"] != "")
 	{
-		var split_tokens = e.data.split(":");
-		if(split_tokens.length == 2 && split_tokens[0] == "userid")
-		{
-			login_token = split_tokens[1];
-			token_found = true;
-			print_entry("Logged in successfully!");	
-		}
+		login_token = recieved_obj["token"]
+		token_found = true;
+		send_with_token("profile"); // request the profile name
 	}
-	if(token_found == false)
+	else
 	{
-		print_entry(e.data)
+		print_entry(recieved_obj["message"]);
 	}
 };
 
 function send() {
 	if(input.value == "clear")
 	{
+		//client side clear
 		output.innerHTML = "";
 	}
 	else if(input.value != "")
 	{
-		socket.send(login_token + " " + input.value);	
+		send_with_token(input.value);
 	}
 	input.value = "";
+}
+
+function send_with_token(str)
+{
+	var to_send = {
+		"token" : login_token,
+		"message" : str
+	};
+	socket.send(JSON.stringify(to_send));
 }
 
 function print_entry(str){
