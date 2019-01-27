@@ -1,0 +1,44 @@
+.entry {
+  margin: 5px; 
+  padding: 2px;
+}
+.help_text{
+	font-size: 0.8em;
+}
+
+input[type=text], select {
+  width: 70%;
+  padding: 12px 20px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button[type=submit] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 9px 15px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button[type=submit]:hover {
+  background-color: #45a049;
+}
+
+.command_holder
+{
+	padding: 10px;
+	position: -webkit-sticky;
+  	position: sticky;	
+  	top: 0;
+  	background-color: white;
+}
+
+body{
+	margin: 200px;
+	font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace;
+}

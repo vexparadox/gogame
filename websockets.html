@@ -1,0 +1,127 @@
+<style>
+.entry {
+  margin: 5px; 
+  padding: 2px;
+}
+.help_text{
+	font-size: 0.8em;
+}
+
+input[type=text], select {
+  width: 70%;
+  padding: 12px 20px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button[type=submit] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 9px 15px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button[type=submit]:hover {
+  background-color: #45a049;
+}
+
+.command_holder
+{
+	padding: 10px;
+	position: -webkit-sticky;
+  	position: sticky;	
+  	top: 0;
+  	background-color: white;
+}
+
+body{
+	margin: 200px;
+	font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace;
+}
+</style>
+<body>
+	<div class="command_holder">
+		<div class="help_text"><b>If you get stuck, use "help" to find your way.</b></div>
+		<input id="command_input" type="text" />
+		<button id="submit_command" type="submit" onclick="send()">Send Command</button>
+	</div>
+	<div id="output"></div>
+</body>
+
+<script>
+
+	///handle enter pressed
+	var input = document.getElementById("command_input");
+	input.addEventListener("keyup", function(event) {
+	  event.preventDefault();
+	  if (event.keyCode === 13) {
+	    document.getElementById("submit_command").click();
+	  }
+	});
+
+
+	var login_token = "dedtoken";
+	var had_connected = false;
+	var address = "46.101.66.98:8080";
+	var output = document.getElementById("output");
+	var socket = new WebSocket("ws://"+address+"/ws");
+
+	socket.onopen = function () {
+		print_entry("Successfully connected to " + address);
+		had_connected = true;
+		socket.send("new_conn");
+	};
+	
+	socket.onclose = function () {
+		if(had_connected)
+		{
+			print_entry("Connection to " + address + " was lost.");	
+		}
+		else
+		{
+			print_entry("Failed to connect to " + address);
+		}
+		
+	};
+
+	socket.onmessage = function (e) {
+		var token_found = false;
+		//waiting for new token to arrive
+		if(login_token == "dedtoken")
+		{
+			var split_tokens = e.data.split(":");
+			if(split_tokens.length == 2 && split_tokens[0] == "userid")
+			{
+				login_token = split_tokens[1];
+				token_found = true;
+				print_entry("Logged in successfully!");	
+			}
+		}
+		if(token_found == false)
+		{
+			print_entry(e.data)
+		}
+	};
+
+	function send() {
+		if(input.value == "clear")
+		{
+			output.innerHTML = "";
+		}
+		else if(input.value != "")
+		{
+			socket.send(login_token + " " + input.value);	
+		}
+		input.value = "";
+	}
+
+	function print_entry(str){
+		output.innerHTML += "<div class='entry'>"+str+"</div>"
+		window.scrollTo(0,document.body.scrollHeight);
+	}
+</script>
