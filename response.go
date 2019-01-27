@@ -63,6 +63,7 @@ func handle_socket(w http.ResponseWriter, r *http.Request){
 							server_reply.Message = reason_str
 						}else{
 							server_reply.Token = (*uuid.UUID)(&(user_data.Id)).String()
+							server_reply.Message = "Welcome back, " + user_data.Username + "."
 						}
 					}
 				} else if command_string == "register" {
@@ -75,7 +76,7 @@ func handle_socket(w http.ResponseWriter, r *http.Request){
 							server_reply.Message = reason_str
 						}else{
 							server_reply.Token = (*uuid.UUID)(&(new_user.Id)).String()
-							server_reply.Message = "You've registered with the username " + parameters[0]
+							server_reply.Message = "You've registered with the username '" + parameters[0] + "'."
 						}
 					}
 				} else if command_string == "help" || command_string == "?"{
@@ -90,7 +91,7 @@ func handle_socket(w http.ResponseWriter, r *http.Request){
 						fmt.Printf("%s: %s used command '%s'\n", conn.RemoteAddr(), user_data.Username, command_string)
 					}
 				}else{
-					server_reply.Message = "Invalid login token, try refreshing or logging in again!"
+					server_reply.Message = "You're not logged in. Try using 'login' or 'register' if you're new."
 				}
 			}
 

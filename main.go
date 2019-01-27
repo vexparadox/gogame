@@ -47,6 +47,8 @@ func main() {
 		return
 	}
 
+	load_users() // try to load users
+
 	response_function_map = map[string](func(*User, []string)string){
 		"look"	: look_function,
 		"l"		: look_function,
