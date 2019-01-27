@@ -1,7 +1,14 @@
 .entry {
   margin: 5px; 
   padding: 2px;
+  background-color: white;
 }
+
+.entry:nth-child(even) {
+    background-color: #f4f4f4;
+    border-radius: 5px;
+}
+
 .help_text{
 	font-size: 0.8em;
 }
@@ -33,9 +40,9 @@ button[type=submit]:hover {
 {
 	padding: 10px;
 	position: -webkit-sticky;
-  	position: sticky;	
-  	top: 0;
-  	background-color: white;
+  position: sticky;	
+  top: 0;
+	background-color: white;
 }
 
 body{
