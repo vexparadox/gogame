@@ -7,10 +7,11 @@ import(
 
 type User struct
 {
-	username string
-	id [16]byte
-	password []byte
-	location_id int
+	Username string
+	Id [16]byte
+	Password []byte
+	Location_id int
+	Inventory Inventory
 }
 
 func is_user_id_valid(user_id string) bool{
@@ -20,7 +21,7 @@ func is_user_id_valid(user_id string) bool{
 	}
 
 	for _, user := range users{
-		if *unique_id == user.id{
+		if *unique_id == user.Id{
 			return true
 		}
 	}
@@ -34,7 +35,7 @@ func get_user_data(user_id string) *User{
 	}
 
 	for _, user := range users{
-		if *unique_id == user.id{
+		if *unique_id == user.Id{
 			return user
 		}
 	}
@@ -43,7 +44,7 @@ func get_user_data(user_id string) *User{
 
 func username_exists(username string) bool{
 	for _, user := range users{
-		if username == user.username{
+		if username == user.Username{
 			return true
 		}
 	}
@@ -65,7 +66,7 @@ func create_new_user(parameters []string) (*User, string){
 	unique_id, _ 		:= uuid.NewV4()
 	hashed_password, _ 	:= bcrypt.GenerateFromPassword([]byte(password), 10)
 	new_user := new(User)
-	*new_user = User{username, *unique_id, hashed_password, 0}
+	*new_user = User{username, *unique_id, hashed_password, 0, Inventory{}}
 	users = append(users, new_user)
 	return new_user, ""
 }

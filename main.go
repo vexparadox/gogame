@@ -14,7 +14,9 @@ var upgrader = websocket.Upgrader{
 	ReadBufferSize:  2048,
 	WriteBufferSize: 2048,
 }
+
 var response_function_map map[string](func(*User, []string)string)
+
 var world_map Map
 var users []*User
 var help_text string
@@ -46,8 +48,6 @@ func main() {
 	}
 
 	response_function_map = map[string](func(*User, []string)string){
-		"help"  : help_function,
-		"?"		: help_function,
 		"look"	: look_function,
 		"l"		: look_function,
 		"profile" : profile_function,

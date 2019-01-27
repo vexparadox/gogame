@@ -50,46 +50,47 @@ func handle_socket(w http.ResponseWriter, r *http.Request){
 				server_reply.Message = world_map.Welcome_text
 				fmt.Printf("%s: New connection\n", conn.RemoteAddr())
 			} else if client_message.Message != "" {
-				//otherwise we check if the token they've provided it valid
-				if is_user_id_valid(client_message.Token) {
-					if command_string == "login"{
+
+				user_data := get_user_data(client_message.Token)
+
+				if command_string == "login"{
+					if user_data != nil{
 						server_reply.Message = "You're already logged in."
-					} else if command_string == "register"{
-						server_reply.Message = "You can't register when you're logged in."
-					} else{
-						user_data := get_user_data(client_message.Token)
-						//call the matching function with the said parameters
-						func_to_call := response_function_map[command_string]
-						if func_to_call != nil{
-							//remove first 2 as they are the login id and function name
-							server_reply.Message = func_to_call(user_data, parameters)
-							fmt.Printf("%s: %s used command '%s'\n", conn.RemoteAddr(), user_data.username, command_string)
-						}	
-					}
-				}else{
-					if command_string == "login"{
+					}else{
 						user_data, reason_str := login_function(parameters)
 						//if we get a nil back, it means it was invalid, so send the reason back to the client
 						if user_data == nil{
 							server_reply.Message = reason_str
 						}else{
-							server_reply.Token = (*uuid.UUID)(&(user_data.id)).String()
+							server_reply.Token = (*uuid.UUID)(&(user_data.Id)).String()
 						}
-					} else if command_string == "register" {
+					}
+				} else if command_string == "register" {
+					if user_data != nil{
+						server_reply.Message = "You can't register when you're logged in."
+					}else{
 						new_user, reason_str := create_new_user(parameters)
 						//if we get a nil back, it means it was invalid, so send the reason back to the client
 						if new_user == nil{
 							server_reply.Message = reason_str
 						}else{
-							server_reply.Token = (*uuid.UUID)(&(new_user.id)).String()
+							server_reply.Token = (*uuid.UUID)(&(new_user.Id)).String()
 							server_reply.Message = "You've registered with the username " + parameters[0]
 						}
-					} else if command_string == "help" || command_string == "?"{
-						//this check is jank af but we need the player to be able to ask for help before they login
-						server_reply.Message = help_function(nil, parameters)
-					}else{
-						server_reply.Message = "Invalid login token, try refreshing or logging in again!"
 					}
+				} else if command_string == "help" || command_string == "?"{
+					server_reply.Message = help_text
+				} else if user_data != nil {
+
+					//call the matching function with the said parameters
+					func_to_call := response_function_map[command_string]
+					if func_to_call != nil{
+						//send back the response of the function
+						server_reply.Message = func_to_call(user_data, parameters)
+						fmt.Printf("%s: %s used command '%s'\n", conn.RemoteAddr(), user_data.Username, command_string)
+					}
+				}else{
+					server_reply.Message = "Invalid login token, try refreshing or logging in again!"
 				}
 			}
 

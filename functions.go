@@ -19,12 +19,12 @@ func login_function(parameters []string) (*User, string) {
 		return nil, incorrect_parameters
 	}
 	for _, user := range users{
-		if user.username == parameters[0]{
-			err := bcrypt.CompareHashAndPassword(user.password, []byte(parameters[1]))
+		if user.Username == parameters[0]{
+			err := bcrypt.CompareHashAndPassword(user.Password, []byte(parameters[1]))
 			if err != nil{
 				return nil, "Invalid password provided!"
 			} else {
-				fmt.Printf("User has logged in: %s\n", user.username)
+				fmt.Printf("User has logged in: %s\n", user.Username)
 				return user, ""
 			}
 		}
@@ -33,16 +33,12 @@ func login_function(parameters []string) (*User, string) {
 }
 
 
-func help_function(_ *User, _ []string) string{
-	return help_text
-}
-
 func profile_function(user_data *User, _[]string) string{
-	return "Username: " + user_data.username
+	return "Username: " + user_data.Username
 }
 
 func go_function(user_data *User, parameters []string) string{
-	current_location := user_data.location_id
+	current_location := user_data.Location_id
 
 	const invalid_direction string = "You can't go in that direction."
 	const impassable_direction string = "That's direction is impassable."
@@ -54,7 +50,7 @@ func go_function(user_data *User, parameters []string) string{
 			} else if world_map.tile_is_passable(current_location+1) == false{
 				return impassable_direction
 			} else {
-				user_data.location_id = current_location+1
+				user_data.Location_id = current_location+1
 				return "You move to the East."
 			}
 		} else if parameters[0] == "w"{
@@ -63,7 +59,7 @@ func go_function(user_data *User, parameters []string) string{
 			} else if world_map.tile_is_passable(current_location-1) == false{
 				return impassable_direction
 			} else {
-				user_data.location_id = current_location-1
+				user_data.Location_id = current_location-1
 				return "You move to the west."
 			}
 		} else if parameters[0] == "n"{
@@ -72,7 +68,7 @@ func go_function(user_data *User, parameters []string) string{
 			} else if world_map.tile_is_passable(current_location-world_map.Width) == false{
 				return impassable_direction
 			} else {
-				user_data.location_id = current_location-world_map.Width
+				user_data.Location_id = current_location-world_map.Width
 				return "You move to the north."
 			}
 		} else if parameters[0] == "s"{
@@ -81,7 +77,7 @@ func go_function(user_data *User, parameters []string) string{
 			} else if world_map.tile_is_passable(current_location+world_map.Width) == false{
 				return impassable_direction
 			} else {
-				user_data.location_id = current_location+world_map.Width
+				user_data.Location_id = current_location+world_map.Width
 				return "You move to the south."
 			}
 
@@ -128,6 +124,6 @@ func look_function(user_data *User, parameters []string) string{
 			return current_tile.Here
 		}
 	}
-	fmt.Printf("Failed to find valid tile for user %s", user_data.username)
+	fmt.Printf("Failed to find valid tile for user %s", user_data.Username)
 	return "Internal server error!"
 }

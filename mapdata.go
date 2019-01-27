@@ -56,7 +56,7 @@ func load_map() bool {
 
 func (_map Map) get_tile_for_user(user *User) *Tile{
 	if user != nil{
-		return &_map.Tiles[user.location_id] 
+		return &_map.Tiles[user.Location_id] 
 	}
 	return nil
 }
