@@ -16,7 +16,7 @@ func is_user_id_valid(user_id string) bool{
 	if unique_id == nil || err != nil{
 		return false
 	}
-
+	
 	for _, user := range users{
 		if *unique_id == user.id{
 			return true
